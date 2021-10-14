@@ -124,7 +124,7 @@ const makeInternObject = data => {
     const { employeeId, name, email, school } = data;
     const intern = new Intern(employeeId, name, email, school);
     // Add to list of employees.
-    employees.push(engineer);
+    employees.push(intern);
 }
 
 // Generate html doc.
@@ -139,36 +139,49 @@ const start = () => {
             // Make manager object.
             makeManagerObject(managerInfo);
 
-            // Display menu
-            displayMenuOptions()
-                .then((menuSelection) => {
-                    if (menuSelection === ADD_ENGINEER) {
-                        console.log('engineer chosen')
-                        // if engineer ...
-                        getEngineerInfo()
-                            .then((engineerInfo) => {
-                                console.log('engineerInfo', engineerInfo)
-                                makeEngineerObject(engineerInfo);
-                            })
-                            .catch();
 
-                    } else if (menuSelection === ADD_INTERN) {
-                        console.log('intern chosen')
-                        // if intern ...
-                        getInternInfo()
-                            .then((internInfo) => {
-                                console.log('intern info', internInfo)
-                                makeInternObject(internInfo);
-                            })
-                            .catch();
+            let proceed = true;
+            let counter = 0
+            while (proceed && counter < 3) {
+                counter++;
+                // Display menu
+                displayMenuOptions()
+                    .then(({ menuChoice }) => {
 
-                    } else {
-                        // if done ...
-                        console.log('done chosen')
-                    }
-                })
-                .catch();
-            console.log(manager)
+                        console.log('zzzzzzzzzzzzzzzzzzzz', menuChoice)
+                        if (menuChoice === ADD_ENGINEER) {
+                            console.log('engineer chosen')
+                            // if engineer ...
+                            getEngineerInfo()
+                                .then((engineerInfo) => {
+                                    console.log('engineerInfo', engineerInfo)
+                                    makeEngineerObject(engineerInfo);
+                                })
+                                .catch();
+
+                        } else if (menuChoice === ADD_INTERN) {
+                            console.log('intern chosen')
+                            // if intern ...
+                            getInternInfo()
+                                .then((internInfo) => {
+                                    console.log('intern info', internInfo)
+                                    makeInternObject(internInfo);
+                                })
+                                .catch();
+
+                        } else {
+                            // if done ...
+                            console.log('done chosen')
+                            proceed = false;
+                        }
+                    })
+                    .catch();
+            }
+            console.log('proceed was false!')
+
+
+
+
         })
         .catch();
 
