@@ -166,41 +166,42 @@ const generateHtmlDoc = () => {
     </ul>
 </div>
 */
-const renderEmployeeCard = (employee) => {
-    // Make the overall card.
-    const cardDiv = document.createElement('div');
-    cardDiv.classList.add('col', 'card');
+// const renderEmployeeCard = (employee) => {
+//     // Make the overall card.
+//     const cardDiv = document.createElement('div');
+//     cardDiv.classList.add('col', 'card');
 
-    // Make header.
-    const headerDiv = document.createElement('div');
-    headerDiv.classList.add('card-header', 'bg-primary');
+//     // Make header.
+//     const headerDiv = document.createElement('div');
+//     headerDiv.classList.add('card-header', 'bg-primary');
 
-    const employeeNameDiv = document.createElement('div');
-    employeeNameDiv.textContent = employee.name;
-    headerDiv.appendChild(employeeNameDiv);
+//     const employeeNameDiv = document.createElement('div');
+//     employeeNameDiv.textContent = employee.name;
+//     headerDiv.appendChild(employeeNameDiv);
 
-    const icon = document.createElement('i');
-    icon.classList('far', 'far-save');
-    headerDiv.appendChild(icon);
+//     const icon = document.createElement('i');
+//     icon.classList('far', 'far-save');
+//     headerDiv.appendChild(icon);
 
-    const employeeTypeDiv = document.createElement('div');
-    employeeTypeDiv.textContent = typeof employee;
-    headerDiv.appendChild(employeeTypeDiv);
+//     const employeeTypeDiv = document.createElement('div');
+//     employeeTypeDiv.textContent = typeof employee;
+//     headerDiv.appendChild(employeeTypeDiv);
 
-    // Make footer ul.
-    const footerDiv = document.createElement('ul');
-    footerDiv.classList.add('list-group', 'list-group-flush');
-    const liTemplate = document.createElement('li');
-    liTemplate.classList.add('list-group-item');
-    liTemplate.textContent = `ID: ${employee.id}`;
-    footerDiv.appendChild(liTemplate);
-    footerDiv.appendChild(liTemplate);
-    footerDiv.appendChild(liTemplate);
+//     // Make footer ul.
+//     const footerDiv = document.createElement('ul');
+//     footerDiv.classList.add('list-group', 'list-group-flush');
+//     const liTemplate = document.createElement('li');
+//     liTemplate.classList.add('list-group-item');
+//     liTemplate.textContent = `ID: ${employee.id}`;
+//     footerDiv.appendChild(liTemplate);
+//     footerDiv.appendChild(liTemplate);
+//     footerDiv.appendChild(liTemplate);
 
-    // Assemble parts.
-    cardDiv.appendChild(headerDiv);
-    cardDiv.appendChild(footerDiv);
-};
+//     // Assemble parts.
+//     cardDiv.appendChild(headerDiv);
+//     cardDiv.appendChild(footerDiv);
+//     employeesDiv.appendChild(cardDiv);
+// };
 
 const start = () => {
     // deleteOldFiles();
