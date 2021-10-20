@@ -23,15 +23,36 @@ const sampleEmployee = {
 employees.push(sampleEmployee);
 
 const start = () => {
-    console.log('in starttttttttttttt')
+    // promptForInput()
+    // .then((responses) => {
+        writeHtmlDoc();
+      console.log('dist/myTeam.html successfully created');
+    // })
+    // .catch((err) => console.error('An error occured when writing the myTeam.html file:', err));
 };
 
 
 
 // Generate html doc.
-const generateHtmlDoc = () => {
+const writeHtmlDoc = () => {
+    writeHtmlTop();
+    writeEmployees();
+    writeHtmlBottom();
+};
+
+const writeHtmlTop = () => {
 
 };
+
+const writeEmployees = () => {
+
+};
+
+const writeHtmlBottom = () => {
+
+};
+
+
 
 // QUESTIONS //////////////////////////////////////////////////////
 // Questions for entering manager info.
