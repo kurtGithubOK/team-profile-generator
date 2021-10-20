@@ -9,6 +9,10 @@ const Intern = require('./lib/Intern');
 const ADD_ENGINEER = 'Add Engineer';
 const ADD_INTERN = 'Add Intern';
 const DONE = 'Done';
+const templateHeaderPathAndFilename = './src/template-header.html';
+const templateFooterPathAndFilename = './src/template-footer.html';
+const outputPathAndFilename = './dist/myTeam.html';
+
 
 // Global variables.
 const employees = [];  // List of employees to be displayed on html page.
@@ -25,8 +29,7 @@ employees.push(sampleEmployee);
 const start = () => {
     // promptForInput()
     // .then((responses) => {
-        writeHtmlDoc();
-      console.log('dist/myTeam.html successfully created');
+    writeHtmlDoc();
     // })
     // .catch((err) => console.error('An error occured when writing the myTeam.html file:', err));
 };
@@ -40,8 +43,17 @@ const writeHtmlDoc = () => {
     writeHtmlBottom();
 };
 
+// Copies content of template-header.html and places into dist/myTeam.html.
 const writeHtmlTop = () => {
-
+    fs.readFile(templateHeaderPathAndFilename, 'utf8', (error, data) => {
+        if (error) console.error(`Error reading ${templateHeaderPathAndFilename}`, error);
+        else {
+            fs.writeFile(outputPathAndFilename, data, (err) => {
+                if (err) console.error(`Error writing ${templateHeaderPathAndFilename}`, err);
+                else console.log(`Success writing ${templateHeaderPathAndFilename}`);
+            });
+        }
+    });
 };
 
 const writeEmployees = () => {
@@ -49,10 +61,16 @@ const writeEmployees = () => {
 };
 
 const writeHtmlBottom = () => {
-
+    fs.readFile(templateFooterPathAndFilename, 'utf8', (error, data) => {
+        if (error) console.error(`Error reading ${templateFooterPathAndFilename}`, error);
+        else {
+            fs.appendFile(outputPathAndFilename, data, (err) => {
+                if (err) console.error(`Error appending ${templateFooterPathAndFilename}`, err);
+                else console.log(`Success appending ${templateFooterPathAndFilename}`);
+            });
+        }
+    });
 };
-
-
 
 // QUESTIONS //////////////////////////////////////////////////////
 // Questions for entering manager info.
