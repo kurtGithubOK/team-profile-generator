@@ -5,13 +5,6 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
-/*
-// icon <i class="far fa-save">
-const icon = $('<i>');
-icon.addClass('far');
-icon.addClass('fa-save');
-*/
-
 // Constants.
 const ADD_ENGINEER = 'Add Engineer';
 const ADD_INTERN = 'Add Intern';
@@ -29,10 +22,18 @@ const sampleEmployee = {
 };
 employees.push(sampleEmployee);
 
-const employeesDiv = document.getElementById('employees');
+const start = () => {
+    console.log('in starttttttttttttt')
+};
 
 
 
+// Generate html doc.
+const generateHtmlDoc = () => {
+
+};
+
+// QUESTIONS //////////////////////////////////////////////////////
 // Questions for entering manager info.
 const getManagerInfo = () => {
     return inquirer.prompt([
@@ -73,7 +74,6 @@ const displayMenuOptions = () => {
 
 // Display questions for entering Engineer info.
 const getEngineerInfo = () => {
-    console.log('xxxxxxxxxxxxxx')
     return inquirer.prompt([
         {
             type: 'input',
@@ -124,7 +124,6 @@ const getInternInfo = () => {
     ]);
 };
 
-
 // Utilities to create employee objects.
 const makeManagerObject = data => {
     const { employeeId, name, email, officeNumber } = data;
@@ -145,106 +144,6 @@ const makeInternObject = data => {
     const intern = new Intern(employeeId, name, email, school);
     // Add to list of employees.
     employees.push(intern);
-}
-
-// Generate html doc.
-const generateHtmlDoc = () => {
-
 };
 
-/*
-<div class="col card">
-    <div class="card-header bg-primary">
-        <div>First name</div>
-        <img src="http://openweathermap.org/img/wn/04d@2x.png" /><br/>
-        <div>employee type</div>
-    </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">ID: 666</li>
-        <li class="list-group-item">Email: kurtheim!yah.com</li>
-        <li class="list-group-item">GitHub: asdfasdfadfs</li>
-    </ul>
-</div>
-*/
-// const renderEmployeeCard = (employee) => {
-//     // Make the overall card.
-//     const cardDiv = document.createElement('div');
-//     cardDiv.classList.add('col', 'card');
-
-//     // Make header.
-//     const headerDiv = document.createElement('div');
-//     headerDiv.classList.add('card-header', 'bg-primary');
-
-//     const employeeNameDiv = document.createElement('div');
-//     employeeNameDiv.textContent = employee.name;
-//     headerDiv.appendChild(employeeNameDiv);
-
-//     const icon = document.createElement('i');
-//     icon.classList('far', 'far-save');
-//     headerDiv.appendChild(icon);
-
-//     const employeeTypeDiv = document.createElement('div');
-//     employeeTypeDiv.textContent = typeof employee;
-//     headerDiv.appendChild(employeeTypeDiv);
-
-//     // Make footer ul.
-//     const footerDiv = document.createElement('ul');
-//     footerDiv.classList.add('list-group', 'list-group-flush');
-//     const liTemplate = document.createElement('li');
-//     liTemplate.classList.add('list-group-item');
-//     liTemplate.textContent = `ID: ${employee.id}`;
-//     footerDiv.appendChild(liTemplate);
-//     footerDiv.appendChild(liTemplate);
-//     footerDiv.appendChild(liTemplate);
-
-//     // Assemble parts.
-//     cardDiv.appendChild(headerDiv);
-//     cardDiv.appendChild(footerDiv);
-//     employeesDiv.appendChild(cardDiv);
-// };
-
-const start = () => {
-    // deleteOldFiles();
-    getManagerInfo()
-        .then((managerInfo) => {
-            // Make manager object.
-            makeManagerObject(managerInfo);
-
-            counter++;
-            // Display menu
-            displayMenuOptions()
-                .then(({ menuChoice }) => {
-
-                    console.log('zzzzzzzzzzzzzzzzzzzz', menuChoice)
-                    if (menuChoice === ADD_ENGINEER) {
-                        console.log('engineer chosen')
-                        // if engineer ...
-                        getEngineerInfo()
-                            .then((engineerInfo) => {
-                                console.log('engineerInfo', engineerInfo)
-                                makeEngineerObject(engineerInfo);
-                            })
-                            .catch();
-
-                    } else if (menuChoice === ADD_INTERN) {
-                        console.log('intern chosen')
-                        // if intern ...
-                        getInternInfo()
-                            .then((internInfo) => {
-                                console.log('intern info', internInfo)
-                                makeInternObject(internInfo);
-                            })
-                            .catch();
-
-                    } else {
-                        // if done ...
-                        console.log('done chosen')
-                        proceed = false;
-                    }
-                })
-                .catch();
-
-        })
-        .catch();
-}
 start();
