@@ -4,185 +4,123 @@ const fs = require('fs');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
+const { managerQuestions, menuOptions, engineerQuestions, internQuestions, ADD_ENGINEER, ADD_INTERN, DONE } = require('./src/questions');
 
 // Constants.
-const ADD_ENGINEER = 'Add Engineer';
-const ADD_INTERN = 'Add Intern';
-const DONE = 'Done';
-const templateHeaderPathAndFilename = './src/template-header.html';
-const templateFooterPathAndFilename = './src/template-footer.html';
+const templateTop = './src/template-top.html';
+const templateBottom = './src/template-bottom.html';
 const outputPathAndFilename = './dist/myTeam.html';
 
-
 // Global variables.
-const employees = [];  // List of employees to be displayed on html page.
-const sampleEmployee = {
-    name: 'Kurt Heimerman',
-    id: 123,
-    email: 'kurtheimerman@yahoo.com',
-    officeNumber: 456,
-    githubLink: 'kurtGithubOK',
-    school: 'West Anchorage Eagles'
-};
-employees.push(sampleEmployee);
+let employees = [];  // List of employees to be displayed on html page.
 
 const start = () => {
-    // promptForInput()
-    // .then((responses) => {
-    writeHtmlDoc();
+    promptForInput()
+    // .then(() => {
+    // writeHtmlDoc();
     // })
-    // .catch((err) => console.error('An error occured when writing the myTeam.html file:', err));
+    // .catch((err) => console.error('An error occured when prompting user for input:', err));
 };
 
-
-
-// Generate html doc.
-const writeHtmlDoc = () => {
-    writeHtmlTop();
-    writeEmployees();
-    writeHtmlBottom();
+const promptForInput = () => {
+    inquirer.prompt(managerQuestions)
+        .then((response) => {
+            const manager = new Manager(response);
+            employees.push(manager);
+            displayMenuOptions();
+        })
+        .catch((error) => console.log('Error occurred when prompting manager questions:', error));
 };
 
-// Copies content of template-header.html and places into dist/myTeam.html.
-const writeHtmlTop = () => {
-    fs.readFile(templateHeaderPathAndFilename, 'utf8', (error, data) => {
-        if (error) console.error(`Error reading ${templateHeaderPathAndFilename}`, error);
-        else {
-            fs.writeFile(outputPathAndFilename, data, (err) => {
-                if (err) console.error(`Error writing ${templateHeaderPathAndFilename}`, err);
-                else console.log(`Success writing ${templateHeaderPathAndFilename}`);
-            });
-        }
-    });
-};
-
-const writeEmployees = () => {
-
-};
-
-const writeHtmlBottom = () => {
-    fs.readFile(templateFooterPathAndFilename, 'utf8', (error, data) => {
-        if (error) console.error(`Error reading ${templateFooterPathAndFilename}`, error);
-        else {
-            fs.appendFile(outputPathAndFilename, data, (err) => {
-                if (err) console.error(`Error appending ${templateFooterPathAndFilename}`, err);
-                else console.log(`Success appending ${templateFooterPathAndFilename}`);
-            });
-        }
-    });
-};
-
-// QUESTIONS //////////////////////////////////////////////////////
-// Questions for entering manager info.
-const getManagerInfo = () => {
-    return inquirer.prompt([
-        {
-            type: 'input',
-            name: 'name',
-            message: 'Enter manager name:',
-        },
-        {
-            type: 'input',
-            name: 'employeeId',
-            message: 'Enter manager employee id:',
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: 'Enter manager email address:',
-        },
-        {
-            type: 'input',
-            name: 'officeNumber',
-            message: 'Enter manager office number:',
-        }
-    ])
-};
-
-// Prompt manager to add an engineer, intern, or done.
 const displayMenuOptions = () => {
-    return inquirer.prompt([
-        {
-            type: 'list',
-            name: 'menuChoice',
-            message: 'What would you like to do next?',
-            choices: [ADD_ENGINEER, ADD_INTERN, DONE]
+    inquirer.prompt(menuOptions)
+        .then(({ menuChoice }) => {
+            if (menuChoice === ADD_ENGINEER) {
+                // if engineer ...
+                inquirer.prompt(engineerQuestions)
+                    .then((engineerAnswers) => {
+                        const engineer = new Engineer(engineerAnswers);
+                        employees.push(engineer);
+                        displayMenuOptions();
+                    })
+                    .catch((error) => console.log('Error occurred when prompting engineer questions:', error));
+            } else if (menuChoice === ADD_INTERN) {
+                console.log('intern chosen')
+                // if intern ...
+                inquirer.prompt(internQuestions)
+                    .then((internAnswers) => {
+                        const intern = new Intern(internAnswers);
+                        employees.push(intern);
+                        displayMenuOptions();
+                    })
+                    .catch();
+            } else {
+                // if done ...
+                console.log('done chosen')
+            }
+        })
+        .catch();
+};
+
+const writeHtmlDoc = () => {
+    Promise.all([readTemplate(templateTop), makeEmployeeCards(), readTemplate(templateBottom)])
+    .then( (data) => {
+        console.log('kkkkkkkkkkk', data)
+        fs.writeFile(outputPathAndFilename, data, (error) => {
+            if (error) reject(`Error occurred in writeContent()`, error);
+        });
+    })
+    .catch( (error) => console.log('Error occurred in writeHtmlDoc()', error));
+};
+
+const readTemplate = (templateFile) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(templateFile, 'utf8', (error, data) => {
+            if (error) reject('Error occurred in readTemplateTop():', error);
+            else resolve(data);
+        });
+    });
+};
+
+let employeeCards = '';
+const makeEmployeeCards = () => {
+    return new Promise((resolve, reject) => {
+        for (const employee of employees) {
+            // pass employee to template and get content back.
+            const employeeCard = makeEmployeeCard(employee);
+            employeeCards += employeeCard;
+            console.log('ddddddddd', employeeCards)
         }
-    ]);
-}
+        resolve(employeeCards);
+    });
 
-// Display questions for entering Engineer info.
-const getEngineerInfo = () => {
-    return inquirer.prompt([
-        {
-            type: 'input',
-            name: 'name',
-            message: 'Enter engineer name:',
-        },
-        {
-            type: 'input',
-            name: 'employeeId',
-            message: 'Enter engineer employee id:',
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: 'Enter engineer email address:',
-        },
-        {
-            type: 'input',
-            name: 'githubLink',
-            message: 'Enter engineer github link:',
-        }
-    ]);
 };
 
-// Display question for entering Intern info.
-const getInternInfo = () => {
-    return inquirer.prompt([
-        {
-            type: 'input',
-            name: 'name',
-            message: 'Enter intern name:',
-        },
-        {
-            type: 'input',
-            name: 'employeeId',
-            message: 'Enter intern employee id:',
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: 'Enter intern email address:',
-        },
-        {
-            type: 'input',
-            name: 'school',
-            message: 'Enter intern school:',
-        }
-    ]);
-};
+// Returns html card for an employee.
+const makeEmployeeCard = ( {employeeId, name, email, github}) => `
+    <div class="col card">
+    <div class="card-header bg-primary">
+        ${name}<br/>
+        <img src="http://openweathermap.org/img/wn/04d@2x.png" /><br/>
+        employee type
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">ID: ${employeeId}</li>
+        <li class="list-group-item">Email: ${email}   MAKE LINK!</li>
+        <li class="list-group-item">GitHub: ${github}   MAKE LINK!</li>
+    </ul>
+    </div>
+`;
 
-// Utilities to create employee objects.
-const makeManagerObject = data => {
-    const { employeeId, name, email, officeNumber } = data;
-    const manager = new Manager(employeeId, name, email, officeNumber);
-    // Add to list of employees.
-    employees.push(manager);
-}
+// start();
+writeHtmlDoc();
+// const data = {employeeId: 22, name: 'kurt', email: 'myEmail', officeNumber: 333}
+// const manager = new Manager(data);
+// employees.push(manager)
+// makeEmployeeCards()
+// .then( (contents) => {
+//     console.log(contents)
+// });
 
-const makeEngineerObject = data => {
-    const { employeeId, name, email, githubLink } = data;
-    const engineer = new Engineer(employeeId, name, email, githubLink);
-    // Add to list of employees.
-    employees.push(engineer);
-};
 
-const makeInternObject = data => {
-    const { employeeId, name, email, school } = data;
-    const intern = new Intern(employeeId, name, email, school);
-    // Add to list of employees.
-    employees.push(intern);
-};
 
-start();
