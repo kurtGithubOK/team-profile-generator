@@ -17,7 +17,7 @@ let employees = [];  // List of employees to be displayed on html page.
 
 // App starts here.  Called from bottom of this index.js file.
 const start = () => {
-    promptForInput()
+    promptForInput();
 };
 
 // Prompt user for manager questions.  
@@ -53,7 +53,7 @@ const displayMenuOptions = () => {
                         employees.push(intern);
                         displayMenuOptions();
                     })
-                    .catch();
+                    .catch((error) => console.log('Error occurred when prompting intern questions:', error));
                 } else {
                 // If done, proceed to write html file.
                 writeHtmlDoc();
