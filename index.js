@@ -96,11 +96,11 @@ const makeEmployeeCards = () => {
 // Returns html card for an employee.
 const makeEmployeeCard = ({ employeeId, name, email, officeNumber, github, school }) => {
   return `
-    <div class="col-3 card">
+    <div class="col-3 card mt-6">
     <div class="card-header bg-primary">
-        ${name}<br/>
-        <img src="http://openweathermap.org/img/wn/04d@2x.png" /><br/>
-        ${makeEmployeeTypeString(officeNumber, github)}
+        <div class="h2 text-white">${name}</div>
+        <div class="h2 text-white">${makeIcon(officeNumber, github)}
+        ${makeEmployeeTypeString(officeNumber, github)}</div>
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">ID: ${employeeId}</li>
@@ -109,6 +109,18 @@ const makeEmployeeCard = ({ employeeId, name, email, officeNumber, github, schoo
     </ul>
     </div>
 `};
+
+const makeIcon = (officeNumber, github) => {
+  let iconString = '';
+  if (officeNumber) {
+    iconString = 'fas fa-mug-hot';
+  } else if (github) {
+    iconString = 'fas fa-glasses';
+  } else {
+    iconString = 'fas fa-user-graduate';
+  }
+  return `<i class="${iconString}"></i>`;
+};
 
 const makeEmployeeTypeString = (officeNumber, github) => {
   let employeeTypeString = '';
@@ -124,7 +136,6 @@ const makeEmployeeTypeString = (officeNumber, github) => {
 
 // If officeNumber is truthy, its a manager.  Similar for thers.
 const makeCardThirdLine = (officeNumber, github, school) => {
-console.log('3333333', officeNumber, github, school)
   let content = '';
   content += '<li class="list-group-item">';
   if (officeNumber) {
