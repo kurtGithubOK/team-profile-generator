@@ -90,7 +90,6 @@ const makeEmployeeCards = () => {
     }
     resolve(employeeCards);
   });
-
 };
 
 // Returns html card for an employee.
