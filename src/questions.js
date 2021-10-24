@@ -53,7 +53,7 @@ const engineerQuestions = [
     },
     {
         type: 'input',
-        name: 'githubLink',
+        name: 'github',
         message: 'Enter engineer github link:',
     }
 ];

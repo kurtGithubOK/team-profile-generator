@@ -45,7 +45,6 @@ const displayMenuOptions = () => {
           })
           .catch((error) => console.log('Error occurred when prompting engineer questions:', error));
       } else if (menuChoice === ADD_INTERN) {
-        console.log('intern chosen')
         // if intern ...
         inquirer.prompt(internQuestions)
           .then((internAnswers) => {
@@ -56,7 +55,6 @@ const displayMenuOptions = () => {
           .catch();
       } else {
         // if done ...
-        console.log('done chosen')
         writeHtmlDoc();
       }
     })
@@ -102,52 +100,52 @@ const makeEmployeeCard = ({ employeeId, name, email, officeNumber, github, schoo
     <div class="card-header bg-primary">
         ${name}<br/>
         <img src="http://openweathermap.org/img/wn/04d@2x.png" /><br/>
-        ${makeEmployeeTypeString(officeNumber, github, school)}
+        ${makeEmployeeTypeString(officeNumber, github)}
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">ID: ${employeeId}</li>
-        <li class="list-group-item"><a mailto:${email}>${email}</a></li>
+        <li class="list-group-item">Email: <a href="mailto:${email}">${email}</a></li>
         ${makeCardThirdLine(officeNumber, github, school)}
     </ul>
     </div>
 `};
 
-const makeEmployeeTypeString = (officeNumber, github, school) => {
-    let employeeTypeString = '';
-    if (officeNumber) {
-      employeeTypeString = 'Manager';
-    } else if (github) {
-        employeeTypeString = 'Engineer';
-    } else {
-      employeeTypeString = `Intern`;
-    }
-    return employeeTypeString;
-  };
+const makeEmployeeTypeString = (officeNumber, github) => {
+  let employeeTypeString = '';
+  if (officeNumber) {
+    employeeTypeString = 'Manager';
+  } else if (github) {
+    employeeTypeString = 'Engineer';
+  } else {
+    employeeTypeString = `Intern`;
+  }
+  return employeeTypeString;
+};
 
 // If officeNumber is truthy, its a manager.  Similar for thers.
 const makeCardThirdLine = (officeNumber, github, school) => {
-  const openingTag = '<li class="list-group-item">';
-  const closingTag = '</li>';
+console.log('3333333', officeNumber, github, school)
   let content = '';
+  content += '<li class="list-group-item">';
   if (officeNumber) {
-    content = 'Office Number: ' + officeNumber;
+    content += 'Office Number: ' + officeNumber;
   } else if (github) {
-    content = `<a href="https://github.com/${github}">github</a>`;
+    content += `GitHub: <a href="https://github.com/${github}" target="new">github</a>`;
   } else {
-    content = `School: ${school}`;
+    content += `School: ${school}`;
   }
-  return openingTag + content + closingTag;
+  content += '</li>';
+  return content;
 };
 
-// start();
-const data = { employeeId: 22, name: 'kurt', email: 'myEmail', officeNumber: 333, github: 'myGithub' }
-const manager = new Manager(data);
-employees.push(manager)
+start();
+// const data = { employeeId: 22, name: 'kurt', email: 'myEmail', officeNumber: 333, github: 'kurtGithubOK', school: 'west anchorage' }
+// const manager = new Manager(data);
+// employees.push(manager)
 // makeEmployeeCards()
 // .then((contents) => {
 //     console.log('eeeee', contents)
 // });
-
-writeHtmlDoc();
+// writeHtmlDoc();
 
 
